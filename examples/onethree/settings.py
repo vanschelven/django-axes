@@ -130,6 +130,10 @@ LOGGING = {
         'mail_admins': {
             'level': 'ERROR',
             'class': 'django.utils.log.AdminEmailHandler'
+        },
+        'null': {
+            'level': 'INFO',
+            'class': 'django.utils.log.NullHandler'
         }
     },
     'loggers': {
@@ -138,5 +142,9 @@ LOGGING = {
             'level': 'ERROR',
             'propagate': True,
         },
+        'axes.watch_login': {
+            'level': 'INFO',
+            'handlers': ['mail_admins'],
+        }
     }
 }

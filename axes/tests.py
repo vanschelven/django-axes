@@ -17,12 +17,21 @@ class AccessAttemptTest(TestCase):
     NOT_GONNA_BE_USERNAME = "whywouldyouohwhy"
 
     def setUp(self):
+        my_middleware = 'axes.middleware.FailedLoginMiddleware'
+        self.old_middleware_classes = settings.MIDDLEWARE_CLASSES
+        if not my_middleware in settings.MIDDLEWARE_CLASSES:
+            settings.MIDDLEWARE_CLASSES += (my_middleware,)
+
         for i in range(0, random.randrange(10, 50)):
             username = "person%s" % i
             email = "%s@example.org" % username
             u = User.objects.create_user(email=email, username=username)
             u.is_staff = True
             u.save()
+
+
+    def tearDown(self):
+        settings.MIDDLEWARE_CLASSES = self.old_middleware_classes
 
     def _gen_bad_password(self):
         return AccessAttemptTest.NOT_GONNA_BE_PASSWORD + str(random.random())
